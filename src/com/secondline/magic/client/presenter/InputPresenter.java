@@ -22,6 +22,7 @@ public class InputPresenter {
 	PopupPanel popup;
 	ResizeLayoutPanel popupContainer = new ResizeLayoutPanel();
 
+	Audio clip;
 	public InputPresenter(InputView v) {
 		this.view = v;
 
@@ -49,6 +50,7 @@ public class InputPresenter {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				clip.pause();
 				regenerate();
 			}
 		});
@@ -79,7 +81,7 @@ public class InputPresenter {
 		ball.add(script);
 		scrollContainer.add(scriptPanel);
 		// Todo: set script
-		Audio clip = Audio.createIfSupported();
+		clip = Audio.createIfSupported();
 		if (clip != null) {
 			clip.addSource("/" + quote.getSource());
 		}
