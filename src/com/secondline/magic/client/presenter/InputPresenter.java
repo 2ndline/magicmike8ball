@@ -14,13 +14,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.secondline.magic.client.InputView;
 import com.secondline.magic.shared.Quote;
 
 public class InputPresenter {
 	private InputView view;
-	PopupPanel popup;
-	ResizeLayoutPanel popupContainer = new ResizeLayoutPanel();
 
 	Audio clip;
 	public InputPresenter(InputView v) {
@@ -30,9 +29,6 @@ public class InputPresenter {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				popup = new PopupPanel(false, false);
-				popup.setWidget(popupContainer);
-
 				regenerate();
 			}
 
@@ -42,9 +38,10 @@ public class InputPresenter {
 	private void regenerate() {
 		// Get disaster and other fields
 
-		HTMLPanel container = new HTMLPanel("");
+		HTMLPanel container = view.getContainer();
+		
+		container.clear();
 		Button cancel = new Button("Try again");
-		container.add(cancel);
 
 		cancel.addClickHandler(new ClickHandler() {
 
@@ -55,8 +52,6 @@ public class InputPresenter {
 			}
 		});
 
-		popupContainer.clear();
-		popupContainer.add(container);
 		Quote quote = Quote.getRandomQuote();
 
 		HTMLPanel ball = new HTMLPanel("");
@@ -70,6 +65,7 @@ public class InputPresenter {
 
 		ScrollPanel scrollContainer = new ScrollPanel();
 		container.add(scrollContainer);
+		scrollContainer.addStyleName("ballcontainer");
 		HTMLPanel scriptPanel = new HTMLPanel("");
 		scriptPanel.add(ball);
 		ball.add(grad);
@@ -80,39 +76,16 @@ public class InputPresenter {
 		script.setStyleName("balltext");
 		ball.add(script);
 		scrollContainer.add(scriptPanel);
+		scriptPanel.add(cancel);
 		// Todo: set script
 		clip = Audio.createIfSupported();
 		if (clip != null) {
 			clip.addSource("/" + quote.getSource());
 		}
 		script.getElement().getStyle().setColor("white");
-		Window.addResizeHandler(new ResizeHandler() {
-
-			@Override
-			public void onResize(ResizeEvent event) {
-				resize();
-			}
-		});
-		resize();
+		
 		clip.play();
 
 	}
 
-	protected void resize() {
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				int windowWidth = Window.getClientWidth();
-				int windowHeight = Window.getClientHeight();
-
-				int width = (windowWidth - 5);
-				int height = (windowHeight - 5);
-				popupContainer.setWidth("" + width + "px");
-				popupContainer.setHeight("" + height + "px");
-
-				popup.center();
-
-			}
-		});
-	}
 }

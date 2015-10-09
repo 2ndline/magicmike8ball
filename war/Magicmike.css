@@ -147,3 +147,23 @@ html,body {
 	transform: translate(-50%, -50%) scaleY(0.1);
 	z-index: 1;
 }
+
+.matt{
+	background-image: url("/matt.jpg");
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+}
+
+.generatebutton{
+    position: relative;
+    top: 80%;
+    font-size: 25px !important;
+    left: 125px;
+}
+
+.ballcontainer{
+	top: 35%;
+    left: 72px;
+}
