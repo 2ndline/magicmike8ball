@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.secondline.magic.client.InputView;
+import com.secondline.magic.shared.Quote;
 
 public class InputPresenter {
 	private InputView view;
@@ -46,14 +48,20 @@ public class InputPresenter {
 
 				popupContainer.clear();
 				popupContainer.add(container);
+				Quote quote = Quote.getRandomQuote();
+
 				ScrollPanel scrollContainer = new ScrollPanel();
 				container.add(scrollContainer);
 				HTMLPanel scriptPanel = new HTMLPanel("");
-				Label script = new Label();
+				Label script = new Label(quote.getText());
 				scriptPanel.add(script);
 				scrollContainer.add(scriptPanel);
 				// Todo: set script
-				script.getElement().getStyle().setColor("red");
+				Audio clip = Audio.createIfSupported();
+				if(clip != null){
+					clip.addSource("/"+quote.getSource());
+				}
+				script.getElement().getStyle().setColor("white");
 				Window.addResizeHandler(new ResizeHandler() {
 
 					@Override
@@ -62,6 +70,7 @@ public class InputPresenter {
 					}
 				});
 				resize();
+				clip.play();
 			}
 
 		});
