@@ -29,51 +29,71 @@ public class InputPresenter {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// Get disaster and other fields
-
 				popup = new PopupPanel(false, false);
 				popup.setWidget(popupContainer);
 
-				HTMLPanel container = new HTMLPanel("");
-				Button cancel = new Button("Try again");
-				container.add(cancel);
-
-				cancel.addClickHandler(new ClickHandler() {
-
-					@Override
-					public void onClick(ClickEvent event) {
-						popup.hide();
-					}
-				});
-
-				popupContainer.clear();
-				popupContainer.add(container);
-				Quote quote = Quote.getRandomQuote();
-
-				ScrollPanel scrollContainer = new ScrollPanel();
-				container.add(scrollContainer);
-				HTMLPanel scriptPanel = new HTMLPanel("");
-				Label script = new Label(quote.getText());
-				scriptPanel.add(script);
-				scrollContainer.add(scriptPanel);
-				// Todo: set script
-				Audio clip = Audio.createIfSupported();
-				if(clip != null){
-					clip.addSource("/"+quote.getSource());
-				}
-				script.getElement().getStyle().setColor("white");
-				Window.addResizeHandler(new ResizeHandler() {
-
-					@Override
-					public void onResize(ResizeEvent event) {
-						resize();
-					}
-				});
-				resize();
-				clip.play();
+				regenerate();
 			}
 
 		});
+	}
+
+	private void regenerate() {
+		// Get disaster and other fields
+
+		HTMLPanel container = new HTMLPanel("");
+		Button cancel = new Button("Try again");
+		container.add(cancel);
+
+		cancel.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				regenerate();
+			}
+		});
+
+		popupContainer.clear();
+		popupContainer.add(container);
+		Quote quote = Quote.getRandomQuote();
+
+		HTMLPanel ball = new HTMLPanel("");
+		ball.setStyleName("eball");
+		HTMLPanel grad = new HTMLPanel("");
+		grad.setStyleName("egrad");
+		HTMLPanel win = new HTMLPanel("");
+		win.setStyleName("ewin");
+		HTMLPanel triangle = new HTMLPanel("");
+		triangle.setStyleName("triangle");
+
+		ScrollPanel scrollContainer = new ScrollPanel();
+		container.add(scrollContainer);
+		HTMLPanel scriptPanel = new HTMLPanel("");
+		scriptPanel.add(ball);
+		ball.add(grad);
+		ball.add(win);
+		ball.add(triangle);
+
+		Label script = new Label(quote.getText());
+		script.setStyleName("balltext");
+		ball.add(script);
+		scrollContainer.add(scriptPanel);
+		// Todo: set script
+		Audio clip = Audio.createIfSupported();
+		if (clip != null) {
+			clip.addSource("/" + quote.getSource());
+		}
+		script.getElement().getStyle().setColor("white");
+		Window.addResizeHandler(new ResizeHandler() {
+
+			@Override
+			public void onResize(ResizeEvent event) {
+				resize();
+			}
+		});
+		resize();
+		clip.play();
+
 	}
 
 	protected void resize() {
@@ -83,8 +103,8 @@ public class InputPresenter {
 				int windowWidth = Window.getClientWidth();
 				int windowHeight = Window.getClientHeight();
 
-				int width = (windowWidth - 25);
-				int height = (windowHeight - 25);
+				int width = (windowWidth - 5);
+				int height = (windowHeight - 5);
 				popupContainer.setWidth("" + width + "px");
 				popupContainer.setHeight("" + height + "px");
 
