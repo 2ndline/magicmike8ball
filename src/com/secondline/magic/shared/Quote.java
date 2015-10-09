@@ -13,7 +13,8 @@ public enum Quote {
 	TwiceADay("I jerk off at least twice a day", "twiceaday.mp3"),
 	FeedTheGeese("You gotta feed the geese...", "feedthegeese.mp3"),
 	Decent("That person's a piece of shit", "decent.mp3"),
-	BeenThatWay("Been that way...", "beenthatway.mp3");
+	BeenThatWay("Been that way...", "beenthatway.mp3"),
+	Livin("You just gotta keep livin", "livin.mp3");
 	String text;
 	String source;
 	
